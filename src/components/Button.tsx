@@ -12,7 +12,7 @@ export function Button({
     <button
       type={type}
       disabled={isLoading}
-      className="flex items-center justify-center bg-green-100 rounded-lg text-white cursor-pointer hover:bg-green-200 transition ease-linear"
+      className="flex items-center justify-center bg-green-100 rounded-lg text-white cursor-pointer hover:bg-green-200 transition ease-linear disabled:opacity-50 disabled:cursor-progress h-12"
       {...rest}
     >
       {children}
