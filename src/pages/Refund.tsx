@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'
 import { Select } from '../components/Select'
@@ -12,10 +13,14 @@ export function Refund() {
   const [filename, setFilename] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
+  const navigate = useNavigate()
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     console.log(name, category, amount, filename)
+
+    navigate('/confirm', { state: { formSubmit: true } })
   }
 
   return (
@@ -31,14 +36,12 @@ export function Refund() {
           Dados da despesa para solicitar o reembolso.
         </p>
       </header>
-
       <Input
         required
         legend="Nome da solicitação"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-
       <div className="flex gap-4">
         <Select
           required
@@ -60,12 +63,11 @@ export function Refund() {
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-
+      Confirm
       <Upload
         filename={filename?.name}
         onChange={(e) => e.target.files && setFilename(e.target.files[0])}
       />
-
       <Button type="submit" isLoading={isLoading}>
         Enviar
       </Button>
