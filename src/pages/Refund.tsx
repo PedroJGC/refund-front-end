@@ -11,7 +11,7 @@ export function Refund() {
   const [category, setCategory] = useState('')
   const [amount, setAmount] = useState('')
   const [filename, setFilename] = useState<File | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
 
   const navigate = useNavigate()
 
