@@ -1,7 +1,18 @@
+/** biome-ignore-all lint/complexity/useLiteralKeys: ignore */
 import { useState } from 'react'
 import searchSvg from '../assets/search.svg'
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'
+import { RefundItem } from '../components/RefundItem'
+import { CATEGORIES } from '../utils/categories'
+
+const REFUND_EXAMPLE = {
+  id: '123',
+  name: 'Pedro',
+  category: 'Alimentação',
+  amount: '100,00',
+  categoryImg: CATEGORIES['food'].icon,
+}
 
 export function Dashboard() {
   const [name, setName] = useState('')
@@ -29,6 +40,10 @@ export function Dashboard() {
           <img src={searchSvg} alt="ícone de pesquisar" className="w-5" />
         </Button>
       </form>
+
+      <div>
+        <RefundItem data={REFUND_EXAMPLE} />
+      </div>
     </div>
   )
 }
