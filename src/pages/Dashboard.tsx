@@ -1,10 +1,11 @@
 /** biome-ignore-all lint/complexity/useLiteralKeys: ignore */
+/** biome-ignore-all lint/correctness/noUnusedVariables: ignore */
 import { useState } from 'react'
 import searchSvg from '../assets/search.svg'
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'
 import { Pagination } from '../components/Pagination'
-import { RefundItem } from '../components/RefundItem'
+import { RefundItem, type RefundItemProps } from '../components/RefundItem'
 import { CATEGORIES } from '../utils/categories'
 import { formatCurrency } from '../utils/formatCurrency'
 
@@ -20,6 +21,7 @@ export function Dashboard() {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(10)
+  const [refunds, setRefunds] = useState<RefundItemProps[]>([REFUND_EXAMPLE])
 
   function fetchRefunds(e: React.FormEvent) {
     e.preventDefault()
@@ -59,8 +61,10 @@ export function Dashboard() {
         </Button>
       </form>
 
-      <div className="flex flex-col gap-4 mt-6 max-h-[342px] overflow-y-scroll">
-        <RefundItem data={REFUND_EXAMPLE} />
+      <div className="flex flex-col gap-4 my-6 max-h-[342px] overflow-y-scroll">
+        {refunds.map((item) => (
+          <RefundItem key={item.id} data={item} href={`/refund/${item.id}`} />
+        ))}
       </div>
 
       <Pagination
