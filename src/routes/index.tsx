@@ -1,13 +1,22 @@
 import { BrowserRouter } from 'react-router'
 
-// import { AuthRoutes } from './AuthRoutes'
+import { Loading } from '../components/Loading'
+
+import { AuthRoutes } from './AuthRoutes'
+
 // import { EmployeeRoutes } from './EmployeeRoutes'
-import { ManagerRoutes } from './ManagerRoutes'
+// import { ManagerRoutes } from './ManagerRoutes'
+
+const isLoading = false
 
 export function Routes() {
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
     <BrowserRouter>
-      <ManagerRoutes />
+      <AuthRoutes />
     </BrowserRouter>
   )
 }
