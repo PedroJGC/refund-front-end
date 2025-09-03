@@ -10,7 +10,7 @@ const isLoading = false
 
 const sessions = {
   user: {
-    role: 'manager',
+    role: '',
   },
 }
 
