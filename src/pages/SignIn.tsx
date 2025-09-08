@@ -1,8 +1,12 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: ignore */
+import { AxiosError } from 'axios'
 import { useActionState } from 'react'
 import { ZodError, z } from 'zod'
+
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'
+
+import { api } from '../services/api'
 
 const signInSchema = z.object({
   email: z.email({ message: 'E-mail inválido' }),
@@ -19,12 +23,17 @@ export function SignIn() {
         password: formData.get('password'),
       })
 
-      console.log(data)
+      const response = await api.post('/sessions', data)
+      console.log(response.data)
     } catch (error) {
       console.error(error)
 
       if (error instanceof ZodError) {
         return { message: error.issues[0].message }
+      }
+
+      if (error instanceof AxiosError) {
+        return { message: error.response?.data.message }
       }
 
       return { message: 'Erro ao fazer login' }
