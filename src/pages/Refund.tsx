@@ -9,7 +9,7 @@ import { Upload } from '../components/Upload'
 import { CATEGORIES, CATEGORIES_KEYS } from '../utils/categories'
 
 const refundSchema = z.object({
-  nome: z
+  name: z
     .string()
     .min(3, { message: 'Informe um nome claro para sua solicitação' }),
   category: z.string().min(1, { message: 'Informe a categoria da despesa' }),
@@ -44,8 +44,7 @@ export function Refund() {
         amount: amount.replace(',', '.'),
       })
 
-      console.log(data)
-      // navigate('/confirm', { state: { formSubmit: true } })
+      navigate('/confirm', { state: { formSubmit: true } })
     } catch (error) {
       console.log(error)
 
