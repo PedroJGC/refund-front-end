@@ -1,11 +1,14 @@
 /** biome-ignore-all lint/complexity/useLiteralKeys: ignore */
 /** biome-ignore-all lint/correctness/noUnusedVariables: ignore */
-import { useState } from 'react'
+
+import { AxiosError } from 'axios'
+import { useEffect, useState } from 'react'
 import searchSvg from '../assets/search.svg'
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'
 import { Pagination } from '../components/Pagination'
 import { RefundItem, type RefundItemProps } from '../components/RefundItem'
+import { api } from '../services/api'
 import { CATEGORIES } from '../utils/categories'
 import { formatCurrency } from '../utils/formatCurrency'
 
@@ -17,16 +20,31 @@ const REFUND_EXAMPLE = {
   categoryImg: CATEGORIES['food'].icon,
 }
 
+const PER_PAGE = 5
+
 export function Dashboard() {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
-  const [totalPage, setTotalPage] = useState(10)
+  const [totalPage, setTotalPage] = useState(0)
   const [refunds, setRefunds] = useState<RefundItemProps[]>([REFUND_EXAMPLE])
 
-  function fetchRefunds(e: React.FormEvent) {
-    e.preventDefault()
+  async function fetchRefunds() {
+    try {
+      const response = await api.get(
+        `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`,
+        {}
+      )
 
-    console.log(name)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.message)
+      }
+
+      alert('Erro ao buscar solicitações')
+    }
   }
 
   function handlePagination(action: 'previous' | 'next') {
@@ -42,6 +60,10 @@ export function Dashboard() {
       return prevPage
     })
   }
+
+  useEffect(() => {
+    fetchRefunds()
+  }, [])
 
   return (
     <div className="bg-gray-500 rounded-xl p-10 md:min-w-[768px]">
