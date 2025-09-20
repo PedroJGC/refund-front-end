@@ -151,5 +151,17 @@
   "files": {
     "ignoreUnknown": false,
     "maxSize": 1048576
-  }
+  },
+  "overrides": [
+    {
+      "patterns": ["**/*.d.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    }
+  ]
 }

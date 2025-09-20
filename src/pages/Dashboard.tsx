@@ -30,7 +30,7 @@ export function Dashboard() {
 
   async function fetchRefunds() {
     try {
-      const response = await api.get(
+      const response = await api.get<RefundsPaginationAPIResponse>(
         `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`,
         {}
       )
