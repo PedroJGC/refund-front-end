@@ -15,6 +15,7 @@ type RefundsPaginationAPIResponse = {
   pagination: {
     page: number
     perPage: number
-    total: number
+    totalRecords: number
+    totalPages: number
   }
 }

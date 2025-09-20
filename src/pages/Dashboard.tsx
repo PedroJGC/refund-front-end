@@ -12,30 +12,31 @@ import { api } from '../services/api'
 import { CATEGORIES } from '../utils/categories'
 import { formatCurrency } from '../utils/formatCurrency'
 
-const REFUND_EXAMPLE = {
-  id: '123',
-  name: 'Pedro',
-  category: 'Alimentação',
-  amount: formatCurrency(34.5),
-  categoryImg: CATEGORIES['food'].icon,
-}
-
 const PER_PAGE = 5
 
 export function Dashboard() {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
-  const [totalPage, setTotalPage] = useState(0)
-  const [refunds, setRefunds] = useState<RefundItemProps[]>([REFUND_EXAMPLE])
+  const [totalOfPage, setTotalOfPage] = useState(0)
+  const [refunds, setRefunds] = useState<RefundItemProps[]>([])
 
   async function fetchRefunds() {
     try {
       const response = await api.get<RefundsPaginationAPIResponse>(
-        `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`,
-        {}
+        `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`
       )
 
-      console.log(response.data)
+      setRefunds(
+        response.data.refunds.map((refund) => ({
+          id: refund.id,
+          name: refund.user.name,
+          description: refund.name,
+          amount: formatCurrency(refund.amount),
+          categoryImg: CATEGORIES[refund.category].icon,
+        }))
+      )
+
+      setTotalOfPage(response.data.pagination.totalPages)
     } catch (error) {
       console.log(error)
 
@@ -49,7 +50,7 @@ export function Dashboard() {
 
   function handlePagination(action: 'previous' | 'next') {
     setPage((prevPage) => {
-      if (action === 'next' && prevPage < totalPage) {
+      if (action === 'next' && prevPage < totalOfPage) {
         return prevPage + 1
       }
 
@@ -91,7 +92,7 @@ export function Dashboard() {
 
       <Pagination
         current={page}
-        total={totalPage}
+        total={totalOfPage}
         onNext={() => handlePagination('next')}
         onPrevious={() => handlePagination('previous')}
       />
